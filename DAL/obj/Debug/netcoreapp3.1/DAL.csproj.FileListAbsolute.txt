@@ -1,0 +1,12 @@
+F:\net core\BanOto\DAL\bin\Debug\netcoreapp3.1\DAL.deps.json
+F:\net core\BanOto\DAL\bin\Debug\netcoreapp3.1\DAL.dll
+F:\net core\BanOto\DAL\bin\Debug\netcoreapp3.1\DAL.pdb
+F:\net core\BanOto\DAL\obj\Debug\netcoreapp3.1\DAL.csprojAssemblyReference.cache
+F:\net core\BanOto\DAL\obj\Debug\netcoreapp3.1\DAL.AssemblyInfoInputs.cache
+F:\net core\BanOto\DAL\obj\Debug\netcoreapp3.1\DAL.AssemblyInfo.cs
+F:\net core\BanOto\DAL\obj\Debug\netcoreapp3.1\DAL.dll
+F:\net core\BanOto\DAL\obj\Debug\netcoreapp3.1\DAL.pdb
+F:\net core\BanOto\DAL\bin\Debug\netcoreapp3.1\Model.dll
+F:\net core\BanOto\DAL\bin\Debug\netcoreapp3.1\Model.pdb
+F:\net core\BanOto\DAL\obj\Debug\netcoreapp3.1\DAL.csproj.CoreCompileInputs.cache
+F:\net core\BanOto\DAL\obj\Debug\netcoreapp3.1\DAL.csproj.CopyComplete
