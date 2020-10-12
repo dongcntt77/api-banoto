@@ -8,7 +8,7 @@ F:\net core\BanOto\BLL\bin\Debug\netcoreapp3.1\Model.pdb
 F:\net core\BanOto\BLL\obj\Debug\netcoreapp3.1\BLL.csprojAssemblyReference.cache
 F:\net core\BanOto\BLL\obj\Debug\netcoreapp3.1\BLL.AssemblyInfoInputs.cache
 F:\net core\BanOto\BLL\obj\Debug\netcoreapp3.1\BLL.AssemblyInfo.cs
-F:\net core\BanOto\BLL\obj\Debug\netcoreapp3.1\BLL.csproj.CoreCompileInputs.cache
 F:\net core\BanOto\BLL\obj\Debug\netcoreapp3.1\BLL.csproj.CopyComplete
 F:\net core\BanOto\BLL\obj\Debug\netcoreapp3.1\BLL.dll
 F:\net core\BanOto\BLL\obj\Debug\netcoreapp3.1\BLL.pdb
+F:\net core\BanOto\BLL\obj\Debug\netcoreapp3.1\BLL.csproj.CoreCompileInputs.cache
