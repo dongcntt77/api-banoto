@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Text;
 using BLL;
 using Microsoft.AspNetCore.Authorization;
@@ -40,7 +42,7 @@ namespace API.Controllers
             {
                 dataFromBase64String = dataFromBase64String.Substring(dataFromBase64String.IndexOf("base64,", 0) + 7);
             }
-            return WriteFileToAuthAccessFolder(RelativePathFileName,dataFromBase64String);
+            return WriteFileToAuthAccessFolder(RelativePathFileName, dataFromBase64String);
         }
         public string WriteFileToAuthAccessFolder(string RelativePathFileName, string base64StringData)
         {
@@ -60,53 +62,86 @@ namespace API.Controllers
                 return ex.Message;
             }
         }
+
+        [Route("delete-user")]
+        [HttpPost]
+        public IActionResult DeleteUser([FromBody] Dictionary<string, object> formData)
+        {
+            string user_id = "";
+            if (formData.Keys.Contains("user_id") && !string.IsNullOrEmpty(Convert.ToString(formData["user_id"]))) { user_id = Convert.ToString(formData["user_id"]); }
+            _userBusiness.Delete(user_id);
+            return Ok();
+        }
+
         [Route("create-user")]
         [HttpPost]
-        public UserModel CreateItem([FromBody] UserModel model)
+        public UserModel CreateUser([FromBody] UserModel model)
         {
+            if (model.image_url != null)
+            {
+                var arrData = model.image_url.Split(';');
+                if (arrData.Length == 3)
+                {
+                    var savePath = $@"assets/images/{arrData[0]}";
+                    model.image_url = $"{savePath}";
+                    SaveFileFromBase64String(savePath, arrData[2]);
+                }
+            }
+            model.user_id = Guid.NewGuid().ToString();
+            _userBusiness.Create(model);
+            return model;
+        }
+
+        [Route("update-user")]
+        [HttpPost]
+        public UserModel UpdateUser([FromBody] UserModel model)
+        {
+            if (model.image_url != null)
+            {
+                var arrData = model.image_url.Split(';');
+                if (arrData.Length == 3)
+                {
+                    var savePath = $@"assets/images/{arrData[0]}";
+                    model.image_url = $"{savePath}";
+                    SaveFileFromBase64String(savePath, arrData[2]);
+                }
+            }
+            _userBusiness.Create(model);
+            return model;
+        }
+
+        [Route("get-by-id/{id}")]
+        [HttpGet]
+        public UserModel GetDatabyID(string id)
+        {
+            return _userBusiness.GetDatabyID(id);
+        }
+
+        [Route("search")]
+        [HttpPost]
+        public ResponseModel Search([FromBody] Dictionary<string, object> formData)
+        {
+            var response = new ResponseModel();
             try
             {
-                if (model.image_url != null)
-                {
-                    var arrData = model.image_url.Split(';');
-                    if (arrData.Length == 3)
-                    {
-                        var savePath = $@"assets/images/{arrData[0]}";
-                        model.image_url = $"{savePath}";
-                        SaveFileFromBase64String(savePath, arrData[2]);
-                    }
-                } 
-                //var resultBUS = _userBusiness.Create(model);  
+                var page = int.Parse(formData["page"].ToString());
+                var pageSize = int.Parse(formData["pageSize"].ToString());
+                string hoten = "";
+                if (formData.Keys.Contains("hoten") && !string.IsNullOrEmpty(Convert.ToString(formData["hoten"]))) { hoten = Convert.ToString(formData["hoten"]); }
+                string taikhoan = "";
+                if (formData.Keys.Contains("taikhoan") && !string.IsNullOrEmpty(Convert.ToString(formData["taikhoan"]))) { hoten = Convert.ToString(formData["taikhoan"]); }
+                long total = 0;
+                var data = _userBusiness.Search(page, pageSize, out total, hoten, taikhoan);
+                response.TotalItems = total;
+                response.Data = data;
+                response.Page = page;
+                response.PageSize = pageSize;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            return model;
-        }
-
-        [Route("get-all")]
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var users = _userBusiness.GetAll();
-            return Ok(users);
-        }
-
-        [Route("get-by-id/{id}")]
-        [HttpGet]
-        public IActionResult GetById(int id)
-        {
-            // only allow admins to access other user records
-            var currentUserId = int.Parse(User.Identity.Name);
-            //  if (id != currentUserId && !User.IsInRole(Role.Admin))
-            //      return Forbid();
-            var user = _userBusiness.GetById(id);
-
-            if (user == null)
-                return NotFound();
-
-            return Ok(user);
+            return response;
         }
     }
 }

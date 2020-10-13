@@ -21,6 +21,10 @@ namespace BLL
             Secret = configuration["AppSettings:Secret"];
             _res = res;
         }
+        public bool Delete(string id)
+        {
+            return _res.Delete(id);
+        }
         public UserModel Authenticate(string username, string password)
         {
             var user = _res.GetUser(username, password);
@@ -35,25 +39,34 @@ namespace BLL
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString()),
-                    new Claim(ClaimTypes.Role, user.Role)
+                    new Claim(ClaimTypes.Name, user.hoten.ToString()),
+                    new Claim(ClaimTypes.Role, user.role)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            user.Token = tokenHandler.WriteToken(token);
+            user.token = tokenHandler.WriteToken(token);
 
-            return user.WithoutPassword();
+            return user;
 
         }
-        public IEnumerable<UserModel> GetAll()
+
+        public UserModel GetDatabyID(string id)
         {
-            return _res.GetAll();
+            return _res.GetDatabyID(id);
         }
-        public UserModel GetById(int id)
+        public bool Create(UserModel model)
         {
-            return _res.GetById(id);
+            return _res.Create(model);
+        }
+        public bool Update(UserModel model)
+        {
+            return _res.Update(model);
+        }
+        public List<UserModel> Search(int pageIndex, int pageSize, out long total, string hoten, string taikhoan)
+        {
+            return _res.Search(pageIndex, pageSize, out total,hoten,taikhoan);
         }
     }
 
