@@ -21,7 +21,7 @@ namespace DAL
             string msgError = "";
             try
             {
-                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "sp_user_update",
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "sp_user_create",
                 "@user_id", model.user_id,
                 "@hoten", model.hoten,
                 "@ngaysinh", model.ngaysinh,
